@@ -52,3 +52,37 @@ class VirtualServerRaw:
         url = self.ralph.get_resource_url("/virtual-servers/{0}/".format(id))
         response = requests.patch(url, headers=headers, data=extra_fields)
         return response.json()
+
+
+class VirtualServerTypeRaw:
+    def __init__(self, ralph):
+        self.ralph = ralph
+
+    def getAll(self):
+        headers = self.ralph.get_auth_headers()
+        url = self.ralph.get_resource_url("/virtual-server-types/")
+        response = requests.get(url, headers=headers)
+        return response.json()
+
+    def get(self, id=None, name=None, filters={}):
+        """
+        filters={
+            "name__contains": "vm"
+        }
+        """
+        if name: filters['name']=name
+        if id: filters['id']=id
+
+        headers = self.ralph.get_auth_headers()
+        url = self.ralph.get_resource_url("/virtual-server-types/")
+        response = requests.get(url, headers=headers, params=filters)
+        return response.json()
+
+    def create(self):
+        raise NotImplementedError()
+
+    def delete(self):
+        raise NotImplementedError()
+
+    def edit(self):
+        raise NotImplementedError()
